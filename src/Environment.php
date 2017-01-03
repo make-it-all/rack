@@ -24,15 +24,15 @@ class Environment {
     $this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
     $this->request_time = $_SERVER['REQUEST_TIME_FLOAT'] ?? null;
     $this->server_ip = $_SERVER['SERVER_ADDR'] ?? null;
-    $this->accepts = $_SERVER['HTTP_ACCEPT'] ? '*/*';
-    $this->server_name = $_SERVER['SERVER_NAME'] ? null;
+    $this->accepts = $_SERVER['HTTP_ACCEPT'] ?? '*/*';
+    $this->server_name = $_SERVER['SERVER_NAME'] ?? null;
     $this->https = isset($_SERVER['HTTPS']);
-    $this->remote_ip = $_SERVER['REMOTE_ADDR'] ? null;
+    $this->remote_ip = $_SERVER['REMOTE_ADDR'] ?? null;
 
     $this->base_url = $_SERVER['HTTP_HOST'] ?? null;
     $this->port = $_SERVER['SERVER_PORT'] ?? null;
     $this->path = $_SERVER['REQUEST_URI'] ?? null;
-    $this->query_string = $_SERVER['QUERY_STRING'] ? null;
+    $this->query_string = $_SERVER['QUERY_STRING'] ?? null;
   }
 
   public function is_https() {
