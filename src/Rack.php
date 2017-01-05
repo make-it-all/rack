@@ -6,7 +6,7 @@ class Rack {
   private static $environment_class = 'Rack\Environment';
 
   public static function add($middleware, ...$args) {
-    self::$middlewares[] = new Rack\Middleware($middleware, $args);
+    self::$middlewares[] = [$middleware, $args];
   }
 
   public static function run() {
@@ -25,8 +25,8 @@ class Rack {
     $i = count(self::$middlewares);
     $next = null;
     while($i) {
-      self::$middlewares[--$i]->setNext($next);
-      $next = self::$middlewares[$i];
+      list($middleware, $args) = self::$middlewares[--$i];
+      $next = new $middleware($next, $args);
     }
     return $next;
   }

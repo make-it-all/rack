@@ -24,9 +24,9 @@ class NoForms {
   }
 
   public function call(Rack\Environment $env) {
-    echo 'STARTING SECOND MIDDLEWARE'.PHP_EOL;
+    echo 'no_forms'.PHP_EOL;
     $response = $this->app->call($env);
-    echo 'ENDING SECOND MIDDLEWARE'.PHP_EOL;
+    echo '/no_forms'.PHP_EOL;
     return $response;
   }
 
@@ -35,20 +35,21 @@ class NoForms {
 
 class Timer {
 
-  public function __construct($app) {
+  public function __construct($app, $count) {
     $this->app = $app;
+    $this->count = $count;
   }
 
   public function call(Rack\Environment $env) {
-    echo 'STARTING FIRST MIDDLEWARE'.PHP_EOL;
+    echo "timer_$this->count".PHP_EOL;
     $response = $this->app->call($env);
-    echo 'ENDING FIRST MIDDLEWARE'.PHP_EOL;
+    echo '/timer'.PHP_EOL;
     return $response;
   }
 
 }
 
-Rack::add('Timer');
+Rack::add('Timer', 4);
 Rack::add('NoForms');
 Rack::add('Application');
 
