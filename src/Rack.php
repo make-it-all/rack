@@ -26,7 +26,7 @@ class Rack {
     $next = null;
     while($i) {
       list($middleware, $args) = self::$middlewares[--$i];
-      $next = new $middleware($next, $args);
+      $next = new $middleware($next, ...$args);
     }
     return $next;
   }
