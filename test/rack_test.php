@@ -9,7 +9,10 @@ class Application {
   }
 
   public function call(Rack\Environment $env) {
-    return [200, ['Http-Content' => 'html/text'], ['Hello World!']];
+    echo 'STARTING APP'.PHP_EOL;
+    $response = [200, ['Http-Content' => 'html/text'], ['THIS IS THE BODY']];
+    echo 'ENDING APP'.PHP_EOL;
+    return $response;
   }
 
 }
@@ -21,11 +24,10 @@ class NoForms {
   }
 
   public function call(Rack\Environment $env) {
-    if ($env->method == 'POST') {
-      return [500, [], ['<h1>NO FORMS ALLOWED</h1>']];
-    } else {
-      return $this->app->call($env);
-    }
+    echo 'STARTING SECOND MIDDLEWARE'.PHP_EOL;
+    $response = $this->app->call($env);
+    echo 'ENDING SECOND MIDDLEWARE'.PHP_EOL;
+    return $response;
   }
 
 }
@@ -38,11 +40,9 @@ class Timer {
   }
 
   public function call(Rack\Environment $env) {
-    $start_time = microtime(true);
+    echo 'STARTING FIRST MIDDLEWARE'.PHP_EOL;
     $response = $this->app->call($env);
-    $time = microtime(true) - $start_time;
-
-    $response[2][] = "THAT TOOK: $time";
+    echo 'ENDING FIRST MIDDLEWARE'.PHP_EOL;
     return $response;
   }
 

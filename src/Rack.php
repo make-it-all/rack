@@ -5,13 +5,14 @@ class Rack {
   static $middlewares = [];
   private static $environment_class = 'Rack\Environment';
 
-  public static function add($middleware) {
-    self::$middlewares[] = $middleware;
+  public static function add($middleware, ...$args) {
+    self::$middlewares[] = new Rack\Middleware($middleware, $args);
   }
 
   public static function run() {
     $init = self::create_chaining();
     $env = new self::$environment_class();
+    ob_start();
     $resonse = $init->call($env);
     self::parse_response($resonse);
   }
@@ -24,7 +25,8 @@ class Rack {
     $i = count(self::$middlewares);
     $next = null;
     while($i) {
-      $next = new self::$middlewares[--$i]($next);
+      self::$middlewares[--$i]->setNext($next);
+      $next = self::$middlewares[$i];
     }
     return $next;
   }
@@ -32,14 +34,18 @@ class Rack {
   private static function parse_response($resonse) {
     list($status, $headers, $body) = $resonse;
 
+
+
     //headers
     header("HTTP/1.1 $status");
     foreach($headers as $key => $value) {
       header("$key: $value");
     }
 
+    //output middleware echos and such
+    ob_get_flush();
+
     //body
-    // ob_end_clean();
     if (is_array($body)) {
       $body = implode($body);
     }
