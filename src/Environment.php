@@ -28,7 +28,7 @@ class Environment {
 
     $this->base_url = $_SERVER['HTTP_HOST'] ?? null;
     $this->port = $_SERVER['SERVER_PORT'] ?? null;
-    $this->path = $_SERVER['REQUEST_URI'] ?? null;
+    $this->path = explode('?', $_SERVER['REQUEST_URI']??'')[0] ?? null;
     $this->query_string = $_SERVER['QUERY_STRING'] ?? null;
   }
 
