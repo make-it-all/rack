@@ -10,13 +10,13 @@ class Application {
 
   public function call(Rack\Environment $env) {
     echo 'STARTING APP'.PHP_EOL;
-    $response = [200, ['Http-Content' => 'html/text'], ['THIS IS THE BODY']];
+    $response = [200, ['Http-Content' => 'html/text'], [$env->protocol]];
     echo 'ENDING APP'.PHP_EOL;
     return $response;
   }
 
 }
-
+//
 class NoForms {
 
   public function __construct($app) {
@@ -32,10 +32,9 @@ class NoForms {
 
 }
 
-
 class Timer {
 
-  public function __construct($app, $count) {
+  public function __construct($app, $count, $bool, $text) {
     $this->app = $app;
     $this->count = $count;
   }
@@ -49,8 +48,8 @@ class Timer {
 
 }
 
-Rack::add('Timer', 4);
 Rack::add('NoForms');
+Rack::add('Timer', 10, false, "HI");
 Rack::add('Application');
 
 Rack::run();
