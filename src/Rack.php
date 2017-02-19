@@ -38,7 +38,7 @@ class Rack {
     }
 
     //output middleware echos and such
-    ob_get_flush();
+    ob_get_clean();
 
     //body
     if (is_array($body)) {
