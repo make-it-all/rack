@@ -1,5 +1,14 @@
 <?php namespace Rack;
 
+
+/*
+  Environment - standardize requests, whilst adding convient functionallity.
+  The environment is a wrapper for all request, environment and server
+  variables. It also serves as a key value store for arbitrary data for middleware
+  to communicate
+
+  @contributers Henry Morgan
+*/
 class Environment {
 
   public $get_vars;
@@ -14,6 +23,9 @@ class Environment {
     $this->request_vars = $_REQUEST;
   }
 
+  /*
+    Extract server variables adding default values where applicable.
+  */
   private function inflate_server() {
     $this->_server = $_SERVER;
 
@@ -32,14 +44,23 @@ class Environment {
     $this->query_string = $_SERVER['QUERY_STRING'] ?? null;
   }
 
+  /*
+    whether the request was https.
+  */
   public function is_https() {
     return $this->https ?? false;
   }
 
+  /*
+    store a key value pair.
+  */
   public function set($key, $value) {
     return $this->vars[$key] = $value;
   }
 
+  /*
+    retrieve a value given a key.
+  */
   public function get($key) {
     return $this->vars[$key];
   }
